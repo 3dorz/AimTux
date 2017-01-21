@@ -6,9 +6,9 @@
 
 Want to chat or play with other AimTux users? Join us on Gitter!
 
-## What is AimTux?
+## What is PAimTux?
 
-AimTux is a fully featured internal hack for *CounterStrike : Global Offensive* written in C++.
+PAimTux is a test version for a couple of thing, inclouding a 9/11 clantagchanger.
 
 
 ## Compiling
