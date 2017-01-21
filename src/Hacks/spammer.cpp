@@ -4,14 +4,19 @@ int Settings::Spammer::type = SpammerType::SPAMMER_NONE;
 bool Settings::Spammer::say_team = false;
 bool Settings::Spammer::KillSpammer::enabled = false;
 bool Settings::Spammer::KillSpammer::say_team = false;
-char* Settings::Spammer::KillSpammer::message = strdup("$nick just got OWNED by AimTux!!");
+char* Settings::Spammer::KillSpammer::message = strdup("$nick just got tapped by imm0rtal.xyz");
 bool Settings::Spammer::RadioSpammer::enabled = false;
 std::vector<std::string> Settings::Spammer::NormalSpammer::messages = {
-		"AimTux owns me and all",
-		"Your Windows p2c sucks my AimTux dry",
-		"It's free as in FREEDOM!",
-		"Tux only let me out so I could play this game, please be nice!",
-		"Tux nutted but you keep sucken",
+		"IMM0RTAL.XYZ OWNS ME AND ALL",
+		"I am legit and you can be, too. Visit imm0rtal.xyz",
+		"Press mouse5 to shoot - imm0rtal.xyz",
+		"Your brett has been delivered by imm0rtal.xyz",
+		"you got a Schelle by imm0rtal.xyz",
+		"U mad bro? Git gud @ imm0rtal.xyz",
+		"learn how to Ace with imm0rtal.xyz",
+		"Derank Service by imm0rtal.xyz",
+		"get your own gaming chair @ imm0rtal.xyz",
+		"IMM0RTAL.XYZ NEVER VAC AND YOU KNOW!",
 		">tfw no vac on Linux"
 };
 int Settings::Spammer::PositionSpammer::team = 1;
@@ -69,25 +74,7 @@ void Spammer::BeginFrame(float frameTime)
 	if (Settings::Spammer::RadioSpammer::enabled)
 	{
 		const char* radioCommands[] = {
-				"coverme",
-				"takepoint",
 				"holdpos",
-				"regroup",
-				"followme",
-				"takingfire",
-				"go",
-				"fallback",
-				"sticktog",
-				"report",
-				"roger",
-				"enemyspot",
-				"needbackup",
-				"sectorclear",
-				"inposition",
-				"reportingin",
-				"getout",
-				"negative",
-				"enemydown",
 		};
 
 		std::srand(std::time(NULL));

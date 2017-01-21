@@ -44,13 +44,13 @@ void NameChanger::BeginFrame(float frameTime)
 		switch (NameChanger::type)
 		{
 			case NC_NORMAL:
-				SetName(Util::PadStringRight("\230AIMTUX.NET", strlen("\230AIMTUX.NET") + RandomInt(10, 50)));
+				SetName(Util::PadStringRight("\nimm0rtal.xyz", strlen("\nimm0rtal.xyz") + RandomInt(10, 50)));
 				break;
 			case NC_RAINBOW:
-				SetName(Util::PadStringRight(" \x01\x0B\x07""A""\x08""I""\x09""M""\x0A""T""\x0B""U""\x0C""X""\x0D"".""\x0E""N""\x0F""E""\x10""T\230", strlen(" \x01\x0B\x07""A""\x08""I""\x09""M""\x0A""T""\x0B""U""\x0C""X""\x0D"".""\x0E""N""\x0F""E""\x10""T\230") + RandomInt(10, 50)));
+				SetName(Util::PadStringRight(" \x01\x0B\x07""A""\x08""I""\x09""M""\x0A""T""\x0B""U""\x0C""X""\x0D"".""\x0E""N""\x0F""E""\x10""T\n", strlen(" \x01\x0B\x07""A""\x08""I""\x09""M""\x0A""T""\x0B""U""\x0C""X""\x0D"".""\x0E""N""\x0F""E""\x10""T\n") + RandomInt(10, 50)));
 				break;
 			case NC_SOLID:
-				SetName(Util::PadStringRight(" \x01\x0B\x07""AIMTUX.NET\230", strlen(" \x01\x0B\x07""AIMTUX.NET\230") + RandomInt(10, 50)));
+				SetName(Util::PadStringRight(" \x01\x0B\x07""imm0rtal.xyz\n", strlen(" \x01\x0B\x07""imm0rtal.xyz\n") + RandomInt(10, 50)));
 				break;
 		}
 
@@ -59,7 +59,7 @@ void NameChanger::BeginFrame(float frameTime)
 		return;
 	}
 
-	SetName(Util::PadStringRight("AIMTUX.NET", strlen("AIMTUX.NET") + changes));
+	SetName(Util::PadStringRight("imm0rtal.xyz", strlen("imm0rtal.xyz") + changes));
 }
 
 void NameChanger::SetName(const char* name)
