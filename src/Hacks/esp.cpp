@@ -23,6 +23,14 @@ ImColor Settings::ESP::decoy_color = ImColor(32, 224, 22, 255);
 ImColor Settings::ESP::flashbang_color = ImColor(224, 207, 22, 255);
 ImColor Settings::ESP::grenade_color = ImColor(224, 22, 22, 255);
 ImColor Settings::ESP::molotov_color = ImColor(224, 22, 22, 255);
+bool Settings::ESP::hp_enemy_color = false;
+bool Settings::ESP::hp_ally_color = false;
+bool Settings::ESP::hp_enemy_visible_color = false;
+bool Settings::ESP::hp_ally_visible_color = false;
+bool Settings::ESP::hp_ct_color = false;
+bool Settings::ESP::hp_t_color = false;
+bool Settings::ESP::hp_ct_visible_color = false;
+bool Settings::ESP::hp_t_visible_color = false;
 ImColor Settings::ESP::Skeleton::color = ImColor(255, 255, 255, 255);
 bool Settings::ESP::Glow::enabled = false;
 ImColor Settings::ESP::Glow::ally_color = ImColor(0, 50, 200, 200);
@@ -32,6 +40,9 @@ ImColor Settings::ESP::Glow::weapon_color = ImColor(200, 0, 50, 200);
 ImColor Settings::ESP::Glow::grenade_color = ImColor(200, 0, 50, 200);
 ImColor Settings::ESP::Glow::defuser_color = ImColor(100, 100, 200, 200);
 ImColor Settings::ESP::Glow::chicken_color = ImColor(100, 200, 100, 200);
+bool Settings::ESP::Glow::hp_ally_color = false;
+bool Settings::ESP::Glow::hp_enemy_color = false;
+bool Settings::ESP::Glow::hp_enemy_visible_color = false;
 bool Settings::ESP::Filters::legit = false;
 bool Settings::ESP::Filters::visibility_check = false;
 bool Settings::ESP::Filters::smoke_check = false;
@@ -107,6 +118,24 @@ const char* ESP::Ranks[] = {
 		"Supreme Master First Class",
 		"The Global Elite"
 };
+
+Color ESP::GetHealthColor(int hp)
+{
+	return Color(
+			std::min(510 * (100 - hp) / 100, 255),
+			std::min(510 * hp / 100, 255),
+			25
+	);
+}
+
+Color ESP::GetHealthColor(C_BasePlayer* player)
+{
+	return Color(
+			std::min(510 * (100 - player->GetHealth()) / 100, 255),
+			std::min(510 * player->GetHealth() / 100, 255),
+			25
+	);
+}
 
 // credits to Casual_Hacker from UC for this method (I modified it a lil bit)
 float GetArmourHealth(float flDamage, int ArmorValue)
@@ -191,7 +220,7 @@ bool ESP::GetBox(C_BaseEntity *entity, int &x, int &y, int &w, int &h)
 
 ImColor ESP::GetESPPlayerColor(C_BasePlayer* player, bool visible)
 {
-	C_BasePlayer* localplayer = (C_BasePlayer*)entitylist->GetClientEntity(engine->GetLocalPlayer());
+	C_BasePlayer* localplayer = (C_BasePlayer*) entitylist->GetClientEntity(engine->GetLocalPlayer());
 	if (!localplayer)
 		return ImColor(255, 255, 255, 255);
 
@@ -200,18 +229,36 @@ ImColor ESP::GetESPPlayerColor(C_BasePlayer* player, bool visible)
 	if (Settings::ESP::team_color_type == TeamColorType::RELATIVE)
 	{
 		if (player->GetTeam() != localplayer->GetTeam())
-			playerColor = visible ? Settings::ESP::enemy_visible_color : Settings::ESP::enemy_color;
+		{
+			if (visible)
+				playerColor = Settings::ESP::hp_enemy_visible_color ? Color::ToImColor(GetHealthColor(player)) : Settings::ESP::enemy_visible_color;
+			else
+				playerColor = Settings::ESP::hp_enemy_color ? Color::ToImColor(GetHealthColor(player)) : Settings::ESP::enemy_color;
+		}
 		else
-			playerColor = visible ? Settings::ESP::ally_visible_color  : Settings::ESP::ally_color;
-
+		{
+			if (visible)
+				playerColor = Settings::ESP::hp_ally_visible_color ? Color::ToImColor(GetHealthColor(player)) : Settings::ESP::ally_visible_color;
+			else
+				playerColor = Settings::ESP::hp_ally_color ? Color::ToImColor(GetHealthColor(player)) : Settings::ESP::ally_color;
+		}
 	}
 	else if (Settings::ESP::team_color_type == TeamColorType::ABSOLUTE)
 	{
 		if (player->GetTeam() == TEAM_TERRORIST)
-			playerColor = visible ? Settings::ESP::t_visible_color : Settings::ESP::t_color;
-
+		{
+			if (visible)
+				playerColor = Settings::ESP::hp_t_visible_color ? Color::ToImColor(GetHealthColor(player)) : Settings::ESP::t_visible_color;
+			else
+				playerColor = Settings::ESP::hp_t_color ? Color::ToImColor(GetHealthColor(player)) : Settings::ESP::t_color;
+		}
 		else if (player->GetTeam() == TEAM_COUNTER_TERRORIST)
-			playerColor = visible ? Settings::ESP::ct_visible_color : Settings::ESP::ct_color;
+		{
+			if (visible)
+				playerColor = Settings::ESP::hp_ct_visible_color ? Color::ToImColor(GetHealthColor(player)) : Settings::ESP::ct_visible_color;
+			else
+				playerColor = Settings::ESP::hp_ct_color ? Color::ToImColor(GetHealthColor(player)) : Settings::ESP::ct_color;
+		}
 	}
 
 	if (player->GetImmune())
@@ -351,7 +398,7 @@ void ESP::DrawEntity(C_BaseEntity* entity, const char* string, Color color)
 
 void ESP::DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_info_t player_info)
 {
-	C_BasePlayer* localplayer = (C_BasePlayer*)entitylist->GetClientEntity(engine->GetLocalPlayer());
+	C_BasePlayer* localplayer = (C_BasePlayer*) entitylist->GetClientEntity(engine->GetLocalPlayer());
 	if (!localplayer)
 		return;
 
@@ -386,14 +433,11 @@ void ESP::DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_info
 	// draw bars
 	if (Settings::ESP::Bars::enabled)
 	{
-		ImColor barColor;
+		Color barColor;
 
 		// clamp it to 100
-		float HealthValue = std::max(0, std::min(player->GetHealth(), 100));
+		int HealthValue = std::max(0, std::min(player->GetHealth(), 100));
 		float HealthPerc = HealthValue / 100.f;
-
-		int Red = std::min((int)((510 * (100 - HealthValue)) / 100), 255);
-		int Green = std::min((int)((510 * HealthValue) / 100), 255);
 
 		int barx = x;
 		int bary = y;
@@ -401,13 +445,9 @@ void ESP::DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_info
 		int barh = h;
 
 		if (Settings::ESP::Bars::color_type == BarColorType::HEALTH_BASED)
-		{
-			barColor = ImColor(Red, Green, 0, 255);
-		}
+			barColor = GetHealthColor(HealthValue);
 		else if (Settings::ESP::Bars::color_type== BarColorType::STATIC_COLOR)
-		{
-			barColor = playerColor;
-		}
+			barColor = Color::FromImColor(playerColor);
 
 		if (Settings::ESP::Bars::type == BarType::VERTICAL)
 		{
@@ -418,7 +458,7 @@ void ESP::DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_info
 			Draw::FilledRectangle(barx, bary, barx + barw, bary + barh, Color(10, 10, 10, 255));
 
 			if (HealthPerc > 0)
-				Draw::FilledRectangle(barx + 1, bary + (barh * (1.f - HealthPerc)) + 1, barx + barw - 1, bary + barh - 1, Color::FromImColor(barColor));
+				Draw::FilledRectangle(barx + 1, bary + (barh * (1.f - HealthPerc)) + 1, barx + barw - 1, bary + barh - 1, barColor);
 
 			barsSpacing.x += barw;
 		}
@@ -431,7 +471,7 @@ void ESP::DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_info
 			Draw::FilledRectangle(barx, bary, barx + barw, bary + barh, Color(10, 10, 10, 255));
 
 			if (HealthPerc > 0)
-				Draw::FilledRectangle(barx + 1, bary + (barh * (1.f - HealthPerc)) + 1, barx + barw - 1, bary + barh - 1, Color::FromImColor(barColor));
+				Draw::FilledRectangle(barx + 1, bary + (barh * (1.f - HealthPerc)) + 1, barx + barw - 1, bary + barh - 1, barColor);
 
 			barsSpacing.x += barw;
 		}
@@ -446,7 +486,7 @@ void ESP::DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_info
 			if (HealthPerc > 0)
 			{
 				barw *= HealthPerc;
-				Draw::Rectangle(barx + 1, bary + 1, barx + barw - 1, bary + barh - 1, Color::FromImColor(barColor));
+				Draw::Rectangle(barx + 1, bary + 1, barx + barw - 1, bary + barh - 1, barColor);
 			}
 			barsSpacing.y += barh;
 		}
@@ -461,7 +501,7 @@ void ESP::DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_info
 			if (HealthPerc > 0)
 			{
 				barw *= HealthPerc;
-				Draw::Rectangle(barx + 1, bary + 1, barx + barw - 1, bary + barh - 1, Color::FromImColor(barColor));
+				Draw::Rectangle(barx + 1, bary + 1, barx + barw - 1, bary + barh - 1, barColor);
 			}
 			barsSpacing.y += barh;
 		}
@@ -489,7 +529,7 @@ void ESP::DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_info
 			Verts2[2].Init(Vector2D(barx + barw, bary + 5));
 			Verts2[3].Init(Vector2D(barx - 4, bary + 5));
 
-			Draw::TexturedPolygon(4, Verts2, Color::FromImColor(barColor));
+			Draw::TexturedPolygon(4, Verts2, barColor);
 
 			Verts2[0].Init(Vector2D(barx + 1, bary + 1));
 			Verts2[1].Init(Vector2D(barx + barw + 2, bary + 1));
@@ -544,7 +584,7 @@ void ESP::DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_info
 		}
 	}
 
-	C_BaseCombatWeapon* active_weapon = (C_BaseCombatWeapon*)entitylist->GetClientEntityFromHandle(player->GetActiveWeapon());
+	C_BaseCombatWeapon* active_weapon = (C_BaseCombatWeapon*) entitylist->GetClientEntityFromHandle(player->GetActiveWeapon());
 
 	// health
 	if (Settings::ESP::Info::health)
@@ -647,7 +687,7 @@ void ESP::DrawPlantedBomb(C_PlantedC4* bomb)
 	}
 	else
 	{
-		C_BasePlayer* localplayer = (C_BasePlayer*)entitylist->GetClientEntity(engine->GetLocalPlayer());
+		C_BasePlayer* localplayer = (C_BasePlayer*) entitylist->GetClientEntity(engine->GetLocalPlayer());
 		Vector vecOrigin = bomb->GetVecOrigin();
 
 		float flDistance = localplayer->GetEyePosition().DistTo(vecOrigin);
@@ -793,7 +833,7 @@ void ESP::DrawSkeleton(C_BasePlayer* player)
 			if (debugOverlay->ScreenPosition(Vector(pBoneToWorldOut[pBone->parent][0][3], pBoneToWorldOut[pBone->parent][1][3], pBoneToWorldOut[pBone->parent][2][3]), vBonePos2))
 				continue;
 
-			Draw::Line(LOC(vBonePos1.x, vBonePos1.y), LOC(vBonePos2.x, vBonePos2.y), Color::FromImColor(Settings::ESP::Skeleton::color));
+			Draw::Line(Vector2D(vBonePos1.x, vBonePos1.y), Vector2D(vBonePos2.x, vBonePos2.y), Color::FromImColor(Settings::ESP::Skeleton::color));
 		}
 	}
 }
@@ -878,7 +918,7 @@ void ESP::DrawSounds()
 		if (debugOverlay->ScreenPosition(footsteps[i].position, pos2d))
 			continue;
 
-		C_BasePlayer* localplayer = (C_BasePlayer*)entitylist->GetClientEntity(engine->GetLocalPlayer());
+		C_BasePlayer* localplayer = (C_BasePlayer*) entitylist->GetClientEntity(engine->GetLocalPlayer());
 		if (!localplayer)
 			continue;
 
@@ -910,16 +950,14 @@ void ESP::DrawSounds()
 
 void ESP::DrawFOVCrosshair()
 {
-	C_BasePlayer* localplayer = (C_BasePlayer*)entitylist->GetClientEntity(engine->GetLocalPlayer());
+	C_BasePlayer* localplayer = (C_BasePlayer*) entitylist->GetClientEntity(engine->GetLocalPlayer());
 	if (!localplayer->GetAlive())
 		return;
 
 	int width, height;
 	engine->GetScreenSize(width, height);
 
-	float radViewFov = (float)(OverrideView::currentFOV * M_PI / 180);
-
-	float circleRadius;
+	float radius;
 	if (Settings::Aimbot::AutoAim::real_distance)
 	{
 		Vector src3D, dst3D, forward;
@@ -928,7 +966,6 @@ void ESP::DrawFOVCrosshair()
 		CTraceFilter filter;
 
 		QAngle angles = viewangles_backup;
-
 		Math::AngleVectors(angles, forward);
 		filter.pSkip = localplayer;
 		src3D = localplayer->GetEyePosition();
@@ -938,7 +975,7 @@ void ESP::DrawFOVCrosshair()
 		trace->TraceRay(ray, MASK_SHOT, &filter, &tr);
 
 		QAngle leftViewAngles = QAngle(angles.x, angles.y - 90.f, 0.f);
-		Math::ClampAngles(leftViewAngles);
+		Math::NormalizeAngles(leftViewAngles);
 		Math::AngleVectors(leftViewAngles, forward);
 		forward *= Settings::Aimbot::AutoAim::fov * 5.f;
 
@@ -948,20 +985,21 @@ void ESP::DrawFOVCrosshair()
 		if (debugOverlay->ScreenPosition(maxAimAt, max2D))
 			return;
 
-		circleRadius = fabsf(width / 2 - max2D.x);
+		radius = fabsf(width / 2 - max2D.x);
 	}
 	else
 	{
-		float radAimbotFov = (float)(Settings::Aimbot::AutoAim::fov * M_PI / 180);
-		circleRadius = tanf(radAimbotFov / 2) / tanf(radViewFov / 2) * width;
+		float aimbotFov = Settings::Aimbot::AutoAim::fov;
+		float fov = OverrideView::currentFOV;
+		radius = tanf(DEG2RAD(aimbotFov) / 2) / tanf(DEG2RAD(fov) / 2) * width;
 	}
 
-	Draw::Circle(LOC(width / 2, height / 2), 20, circleRadius, Color::FromImColor(Settings::ESP::FOVCrosshair::color));
+	Draw::Circle(Vector2D(width / 2, height / 2), 20, radius, Color::FromImColor(Settings::ESP::FOVCrosshair::color));
 }
 
 void ESP::DrawGlow()
 {
-	C_BasePlayer* localplayer = (C_BasePlayer*)entitylist->GetClientEntity(engine->GetLocalPlayer());
+	C_BasePlayer* localplayer = (C_BasePlayer*) entitylist->GetClientEntity(engine->GetLocalPlayer());
 	if (!localplayer)
 		return;
 
@@ -988,14 +1026,12 @@ void ESP::DrawGlow()
 			if (glow_object.m_pEntity->GetTeam() != localplayer->GetTeam())
 			{
 				if (Entity::IsVisible(player, BONE_HEAD))
-					color = Settings::ESP::Glow::enemy_visible_color;
+					color = Settings::ESP::Glow::hp_enemy_visible_color ? Color::ToImColor(GetHealthColor(player)) : Settings::ESP::Glow::enemy_visible_color;
 				else
-					color = Settings::ESP::Glow::enemy_color;
+					color = Settings::ESP::Glow::hp_enemy_color ? Color::ToImColor(GetHealthColor(player)) : Settings::ESP::Glow::enemy_color;
 			}
 			else
-			{
-				color = Settings::ESP::Glow::ally_color;
-			}
+				color = Settings::ESP::Glow::hp_ally_color ? Color::ToImColor(GetHealthColor(player)) : Settings::ESP::Glow::ally_color;
 		}
 		else if (client->m_ClassID != CBaseWeaponWorldModel &&
 				 (strstr(client->m_pNetworkName, "Weapon") || client->m_ClassID == CDEagle || client->m_ClassID == CAK47))
@@ -1049,7 +1085,7 @@ void ESP::Paint()
 	if (!engine->IsInGame())
 		return;
 
-	C_BasePlayer* localplayer = (C_BasePlayer*)entitylist->GetClientEntity(engine->GetLocalPlayer());
+	C_BasePlayer* localplayer = (C_BasePlayer*) entitylist->GetClientEntity(engine->GetLocalPlayer());
 	if (!localplayer)
 		return;
 
@@ -1076,17 +1112,17 @@ void ESP::Paint()
 		}
 		if ((client->m_ClassID != CBaseWeaponWorldModel && (strstr(client->m_pNetworkName, "Weapon") || client->m_ClassID == CDEagle || client->m_ClassID == CAK47)) && Settings::ESP::Filters::weapons)
 		{
-			C_BaseCombatWeapon* weapon = (C_BaseCombatWeapon*)entity;
+			C_BaseCombatWeapon* weapon = (C_BaseCombatWeapon*) entity;
 			DrawDroppedWeapons(weapon);
 		}
 		else if (client->m_ClassID == CC4 && Settings::ESP::Filters::bomb)
 		{
-			C_BaseCombatWeapon* bomb = (C_BaseCombatWeapon*)entity;
+			C_BaseCombatWeapon* bomb = (C_BaseCombatWeapon*) entity;
 			DrawBomb(bomb);
 		}
 		else if (client->m_ClassID == CPlantedC4 && Settings::ESP::Filters::bomb)
 		{
-			C_PlantedC4* pC4 = (C_PlantedC4*)entity;
+			C_PlantedC4* pC4 = (C_PlantedC4*) entity;
 			DrawPlantedBomb(pC4);
 		}
 		else if (client->m_ClassID == CHostage && Settings::ESP::Filters::hostages)
@@ -1141,11 +1177,11 @@ void ESP::EmitSound(int iEntIndex, const char *pSample)
 
 void ESP::DrawScope()
 {
-	C_BasePlayer* localplayer = (C_BasePlayer*)entitylist->GetClientEntity(engine->GetLocalPlayer());
+	C_BasePlayer* localplayer = (C_BasePlayer*) entitylist->GetClientEntity(engine->GetLocalPlayer());
 	if (!localplayer)
 		return;
 
-	C_BaseCombatWeapon* active_weapon = (C_BaseCombatWeapon*)entitylist->GetClientEntityFromHandle(localplayer->GetActiveWeapon());
+	C_BaseCombatWeapon* active_weapon = (C_BaseCombatWeapon*) entitylist->GetClientEntityFromHandle(localplayer->GetActiveWeapon());
 	if (!active_weapon)
 		return;
 

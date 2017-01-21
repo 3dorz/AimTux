@@ -1,4 +1,4 @@
-![banner](http://i.imgur.com/MfuCMwC.png)
+![banner](http://aimtux.net/images/banner.png)
 
 ===================
 
@@ -33,6 +33,8 @@ __Gentoo:__
 ```bash
 sudo emerge cmake dev-vcs/git gdb libsdl2 mesa
 ```
+
+If your compiler (`g++`) is out of date please follow [this](https://github.com/McSwaggens/AimTux/wiki/Updating-your-compiler) wiki page for a solution.
 
 ===================
 
@@ -88,7 +90,7 @@ if you see `$1 = (void *) 0x0`, the `.so` file either couldn't be found or somet
 
 Now, go back into csgo, if you're in the main menu of the game you should see the AimTux banner in the top left like so:
 
-![this](http://i.imgur.com/I2NSAia.png)
+![this](http://aimtux.net/images/screenshot4.png)
 
 ## Using the hack
 
@@ -104,6 +106,34 @@ If you wish to unload the hack from the game, you can do so by entering the comm
 ./uload
 ```
 
+## Updating AimTux
+
+We add and improve and fix things almost every day with AimTux, we don't have a fixed release schedule, we just add things to it when they're ready. Because of this AimTux will need to update a lot.
+
+If you don't update once a day then I recommend at LEAST update once a week, and ALWAYS update after a CSGO update, just to make sure we fix anything that's broken.
+
+We provide a script included in the AimTux folder that updates AimTux for you, to use it, just run:
+
+```
+./update
+```
+
+And it will download and compile without any effort. Once it's done. Happy hacking!
+
+## Configs
+
+Configs are stored in a hidden directory in your home folder. Specifically 
+
+```
+~/.configs/AimTux
+```
+
+Each config.json is stored in a seperately named folder (The name you see in-game, in the config window). 
+
+To add a config, create a folder inside of the `~/.configs/AimTux` folder with a name of your choice, and paste the `config.json` inside of that folder.
+
+To see hidden folders inside your home folder, press CTRL+H when using a file manager.
+
 ## Contributing to AimTux
 
 If you wish to contribute code to this opensource project, please keep some things mind before creating a *pull request*:
@@ -115,9 +145,9 @@ If you wish to contribute code to this opensource project, please keep some thin
 
 ## Screenshots
 
-![menu](http://i.imgur.com/SD7x7w2.png)
-![skins](http://i.imgur.com/NTMy3EI.png)
-![esp_chams](http://i.imgur.com/r8fk1Rt.jpg)
+![menu](http://aimtux.net/images/screenshot1.png)
+![skins](http://aimtux.net/images/screenshot2.png)
+![esp_chams](http://aimtux.net/images/screenshot3.jpeg)
 
 ## Credits
 Special thanks to [@aixxe](http://www.github.com/aixxe/) ([aixxe.net](http://www.aixxe.net)) for the skin changer and with the initial project, as well as helping this project with source code (Available on [@aixxe's](http://www.github.com/aixxe/) github page.)
