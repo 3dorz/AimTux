@@ -524,6 +524,11 @@ namespace Settings
 			extern int duration;
 			extern int size;
 			extern int inner_gap;
+
+			namespace Damage
+			{
+				extern bool enabled;
+			}
 		}
 	}
 
@@ -766,6 +771,12 @@ namespace Settings
 	{
 		extern bool enabled;
 		extern ButtonCode_t key;
+	}
+
+	namespace NameStealer
+	{
+		extern bool enabled;
+		extern int team;
 	}
 
 	void LoadDefaultsOrSave(std::string path);
