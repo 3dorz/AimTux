@@ -34,14 +34,14 @@ __Gentoo:__
 sudo emerge cmake dev-vcs/git gdb libsdl2 mesa
 ```
 
-If your compiler (`g++`) is out of date please follow [this](https://github.com/McSwaggens/AimTux/wiki/Updating-your-compiler) wiki page for a solution.
+If your compiler (`g++`) is out of date please follow [this](https://github.com/AimTuxOfficial/AimTux/wiki/Updating-your-compiler) wiki page for a solution. (`-std=c++14` error).
 
 ===================
 
 #### Download AimTux:
 
 ```bash
-git clone https://github.com/McSwaggens/AimTux
+git clone --recursive https://github.com/AimTuxOfficial/AimTux
 ```
 
 ```bash
@@ -84,9 +84,7 @@ You might be prompted to enter in your password, this is because the injection s
 
 You should see a lot of text being printed out, most of which is not important,
 
-If you see something like`$1 = (void *) 0x3690fa00` (yours will be different) it means that the injection was successfull.
-However,
-if you see `$1 = (void *) 0x0`, the `.so` file either couldn't be found or something has gone wrong.
+If the injection was successfull you'll see a message at the bottom saying `Successfully injected!`, however, if the message says `Injection failed`, then you've most likely done something wrong.
 
 Now, go back into csgo, if you're in the main menu of the game you should see the AimTux banner in the top left like so:
 
@@ -120,25 +118,28 @@ We provide a script included in the AimTux folder that updates AimTux for you. T
 
 And it will download and compile without any effort. Once it's done, happy hacking!
 
+## Video Tutorial for dummies
+
+[![tutorial](http://img.youtube.com/vi/bkEj57BviM8/0.jpg)](https://www.youtube.com/watch?v=bkEj57BviM8)
+
 ## Configs
 
 Configs are stored in a hidden directory in your home folder. Specifically 
 
 ```
-~/.configs/AimTux
+~/.config/AimTux
 ```
 
 Each `config.json` is stored in a seperately named folder (The name you see in-game, in the config window). 
 
-To add a config, create a folder inside of the `~/.configs/AimTux` folder with a name of your choice, and paste the `config.json` inside of that folder.
+To add a config, create a folder inside of the `~/.config/AimTux` folder with a name of your choice, and paste the `config.json` inside of that folder.
 
 To see hidden folders inside your home folder, press <kbd>CTRL</kbd>+<kbd>H</kbd> when using a file manager.
 
 ## Contributing to AimTux
 
 If you wish to contribute code to this opensource project, please keep some things mind before creating a *pull request*:
- - Make sure you're using tabs instead of spaces.
- - Curly braces are to be placed on a new line.
+ - Make sure you're using the correct [code style](https://github.com/AimTuxOfficial/AimTux/wiki/Code-Style).
  - Make sure your commits are clean and straight forward ( no junk commits )
  - Explain what you've done in your pull request.
 

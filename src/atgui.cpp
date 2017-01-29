@@ -136,8 +136,11 @@ void SetupMainMenuBar()
 		ImGui::Selectable("Main Window", &showMainWindow, 0, ImVec2(ImGui::CalcTextSize("Main Window", NULL, true).x, 0.0f));
 		ImGui::SameLine();
 
-		ImGui::Selectable("Skin Changer Window", &showSkinChangerWindow, 0, ImVec2(ImGui::CalcTextSize("Skin Changer Window", NULL, true).x, 0.0f));
-		ImGui::SameLine();
+        if (ModSupport::current_mod != ModType::CSCO)
+        {
+            ImGui::Selectable("Skin Changer Window", &showSkinChangerWindow, 0, ImVec2(ImGui::CalcTextSize("Skin Changer Window", NULL, true).x, 0.0f));
+            ImGui::SameLine();
+        }
 
 		ImGui::Selectable("Config Window", &showConfigWindow, 0, ImVec2(ImGui::CalcTextSize("Config Window", NULL, true).x, 0.0f));
 		ImGui::SameLine();
@@ -1155,7 +1158,7 @@ void VisualsTab()
 void HvHTab()
 {
 	const char* YTypes[] = {
-			"SLOW SPIN", "FAST SPIN", "JITTER", "SIDE", "BACKWARDS", "FORWARDS", "LEFT", "RIGHT", "STATIC", // safe
+			"SLOW SPIN", "FAST SPIN", "JITTER", "SIDE", "BACKWARDS", "FORWARDS", "LEFT", "RIGHT", "STATIC", "STATIC JITTER", "STATIC SMALL JITTER", // safe
 			"LISP", "LISP SIDE", "LISP JITTER", "ANGEL BACKWARDS", "ANGEL INVERSE", "ANGEL SPIN" // untrusted
 	};
 
@@ -1187,7 +1190,7 @@ void HvHTab()
 					ImGui::PushItemWidth(-1);
 						if (ImGui::Combo("##YFAKETYPE", &Settings::AntiAim::Yaw::type_fake, YTypes, IM_ARRAYSIZE(YTypes)))
 						{
-							if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::type_fake > AntiAimType_Y::STATICAA)
+							if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::type_fake >= AntiAimType_Y::LISP)
 							{
 								Settings::AntiAim::Yaw::type_fake = SPIN_SLOW;
 								ImGui::OpenPopup("Error###UNTRUSTED_AA");
@@ -1196,7 +1199,7 @@ void HvHTab()
 
 						if (ImGui::Combo("##YACTUALTYPE", &Settings::AntiAim::Yaw::type, YTypes, IM_ARRAYSIZE(YTypes)))
 						{
-							if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::type > AntiAimType_Y::STATICAA)
+							if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)
 							{
 								Settings::AntiAim::Yaw::type = SPIN_SLOW;
 								ImGui::OpenPopup("Error###UNTRUSTED_AA");
@@ -1220,7 +1223,7 @@ void HvHTab()
 					ImGui::PushItemWidth(-1);
 						if (ImGui::Combo("##XTYPE", &Settings::AntiAim::Pitch::type, XTypes, IM_ARRAYSIZE(XTypes)))
 						{
-							if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Pitch::type > AntiAimType_X::FRONT)
+							if (!ValveDSCheck::forceUT && ((*csGameRules) && (*csGameRules)->IsValveDS()) && Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_UP_FAKE)
 							{
 								Settings::AntiAim::Pitch::type = STATIC_UP;
 								ImGui::OpenPopup("Error###UNTRUSTED_AA");
@@ -1281,7 +1284,6 @@ void HvHTab()
 	{
 		ImGui::BeginChild("HVH2", ImVec2(0, 0), true);
 		{
-
 			ImGui::Text("Resolver");
 			ImGui::Separator();
 			ImGui::Checkbox("Resolve All", &Settings::Resolver::resolve_all);
@@ -1528,7 +1530,7 @@ void MiscTab()
 
 			ImGui::SameLine();
 			if (ImGui::Button("Set Nickname", ImVec2(-1, 0)))
-				NameChanger::SetName(nickname);
+				NameChanger::SetName(strdup(nickname));
 
 			if (ImGui::Button("Glitch Name"))
 				NameChanger::SetName("\n\xAD\xAD\xAD");
@@ -1545,6 +1547,7 @@ void MiscTab()
 			if (ImGui::Button("Rainbow Name"))
 			{
 				NameChanger::changes = 0;
+				NameChanger::origName = NameChanger::GetName();
 				NameChanger::type = NC_RAINBOW;
 			}
 
@@ -1552,6 +1555,7 @@ void MiscTab()
 			if (ImGui::Button("Solid Red Name"))
 			{
 				NameChanger::changes = 0;
+				NameChanger::origName = NameChanger::GetName();
 				NameChanger::type = NC_SOLID;
 			}
 
@@ -1567,6 +1571,9 @@ void MiscTab()
 				ImGui::Checkbox("Fake Lag", &Settings::FakeLag::enabled);
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Chokes packets so it appears you're lagging");
+				ImGui::Checkbox("Adaptive Fake Lag", &Settings::FakeLag::adaptive);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Uses dynamic choke value based on your velocity");
 				ImGui::Checkbox("Auto Accept", &Settings::AutoAccept::enabled);
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Auto accept games when in MM queue");
@@ -1598,12 +1605,12 @@ void MiscTab()
 				ImGui::Checkbox("Show Ranks", &Settings::ShowRanks::enabled);
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Displays competitive rank of all players in the scoreboard next to their name during a competitive match");
-				UI::KeyBindButton(&Settings::Airstuck::key);
-				UI::KeyBindButton(&Settings::Autoblock::key);
-				UI::KeyBindButton(&Settings::Teleport::key);
 				ImGui::Checkbox("Screenshot Cleaner", &Settings::ScreenshotCleaner::enabled);
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Prevents AimTux visuals from appearing in screenshots taken");
+				UI::KeyBindButton(&Settings::Airstuck::key);
+				UI::KeyBindButton(&Settings::Autoblock::key);
+				UI::KeyBindButton(&Settings::Teleport::key);
 			}
 			ImGui::Columns(1);
 			ImGui::Separator();
@@ -2032,6 +2039,9 @@ void PlayerListWindow()
 					IEngineClient::player_info_t entityInformation;
 					engine->GetPlayerInfo(it, &entityInformation);
 
+					if (entityInformation.ishltv)
+						continue;
+
 					ImGui::Separator();
 
 					if (ImGui::Selectable(id, it == currentPlayer, ImGuiSelectableFlags_SpanAllColumns))
@@ -2130,9 +2140,12 @@ void UI::SetupWindows()
 			MainWindow();
 		ImGui::PopStyleVar();
 
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(640, 695));
+		if (ModSupport::current_mod != ModType::CSCO)
+		{
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(640, 695));
 			SkinChangerWindow();
-		ImGui::PopStyleVar();
+			ImGui::PopStyleVar();
+		}
 
 		ConfigWindow();
 		ColorsWindow();

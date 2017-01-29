@@ -58,6 +58,8 @@ enum AntiAimType_Y : int
 	LEFT,
 	RIGHT,
 	STATICAA,
+	STATICJITTER,
+	STATICSMALLJITTER,
 	LISP,
 	LISP_SIDE,
 	LISP_JITTER,
@@ -728,6 +730,7 @@ namespace Settings
 	namespace FakeLag
 	{
 		extern bool enabled;
+		extern bool adaptive;
 		extern int value;
 	}
 

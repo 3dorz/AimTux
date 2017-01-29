@@ -84,6 +84,7 @@ void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clamp)
 	static bool yFlip;
 	float temp;
 	double factor;
+	static float trigger;
 	QAngle temp_qangle;
 
 	if (bFlip)
@@ -120,6 +121,20 @@ void DoAntiAimY(QAngle& angle, int command_number, bool bFlip, bool& clamp)
 			break;
 		case AntiAimType_Y::STATICAA:
 			angle.y = 0.0f;
+			break;
+		case AntiAimType_Y::STATICJITTER:
+			trigger += 15.0f;
+			angle.y = trigger > 50.0f ? 150.0f : -150.0f;
+
+			if (trigger > 100.0f)
+				trigger = 0.0f;
+			break;
+		case AntiAimType_Y::STATICSMALLJITTER:
+			trigger += 15.0f;
+			angle.y = trigger > 50.0f ? -30.0f : 30.0f;
+
+			if (trigger > 100.0f)
+				trigger = 0.0f;
 			break;
 		case AntiAimType_Y::LISP:
 			clamp = false;
@@ -281,13 +296,13 @@ void AntiAim::CreateMove(CUserCmd* cmd)
 
 	if (!ValveDSCheck::forceUT && (*csGameRules) && (*csGameRules)->IsValveDS())
 	{
-		if (Settings::AntiAim::Yaw::type > AntiAimType_Y::STATICAA)
+		if (Settings::AntiAim::Yaw::type >= AntiAimType_Y::LISP)
 			Settings::AntiAim::Yaw::type = SPIN_SLOW;
 
-		if (Settings::AntiAim::Yaw::type_fake > AntiAimType_Y::STATICAA)
+		if (Settings::AntiAim::Yaw::type_fake >= AntiAimType_Y::LISP)
 			Settings::AntiAim::Yaw::type_fake = SPIN_SLOW;
 
-		if (Settings::AntiAim::Pitch::type > AntiAimType_X::FRONT)
+		if (Settings::AntiAim::Pitch::type >= AntiAimType_X::STATIC_UP_FAKE)
 			Settings::AntiAim::Pitch::type = STATIC_UP;
 	}
 
