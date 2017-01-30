@@ -31,6 +31,8 @@ IEngineSound* sound = nullptr;
 ILocalize* localize = nullptr;
 ICommandLine* commandline = nullptr;
 
+CInput* input = nullptr;
+
 VMT* panel_vmt = nullptr;
 VMT* client_vmt = nullptr;
 VMT* modelRender_vmt = nullptr;
@@ -142,13 +144,20 @@ void Hooker::FindIClientMode()
 	uintptr_t hudprocessinput = reinterpret_cast<uintptr_t>(getvtable(client)[10]);
 	GetClientModeFn GetClientMode = reinterpret_cast<GetClientModeFn>(GetAbsoluteAddress(hudprocessinput + 11, 1, 5));
 
-	clientMode_vmt = new VMT(GetClientMode());
+	clientMode = GetClientMode();
+	clientMode_vmt = new VMT(clientMode);
 }
 
 void Hooker::FindGlobalVars()
 {
-	uintptr_t hudupdate = reinterpret_cast<uintptr_t>(getvtable(client)[11]);
-	globalvars = *reinterpret_cast<CGlobalVars**>(GetAbsoluteAddress(hudupdate + 13, 3, 7));
+	uintptr_t HudUpdate = reinterpret_cast<uintptr_t>(getvtable(client)[11]);
+	globalvars = *reinterpret_cast<CGlobalVars**>(GetAbsoluteAddress(HudUpdate + 13, 3, 7));
+}
+
+void Hooker::FindCInput()
+{
+	uintptr_t IN_ActivateMouse = reinterpret_cast<uintptr_t>(getvtable(client)[15]);
+	input = **reinterpret_cast<CInput***>(GetAbsoluteAddress(IN_ActivateMouse, 3, 7));
 }
 
 void Hooker::FindGlowManager()

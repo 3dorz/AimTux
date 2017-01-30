@@ -4,11 +4,9 @@ namespace Util
 {
 	namespace Items
 	{
-		const enum ItemDefinitionIndex _invalid_item = (enum ItemDefinitionIndex) -1;
-
-		using i = enum ItemDefinitionIndex;
-		const std::map<std::string, enum ItemDefinitionIndex> ItemNames = {
-			{ "ITEM_INVALID",					_invalid_item },	 // Convention (see config file)
+		using i = ItemDefinitionIndex;
+		const std::map<std::string, ItemDefinitionIndex> ItemNames = {
+			{ "ITEM_INVALID",					i::INVALID },	 // Convention (see config file)
 			{ "WEAPON_DEAGLE",					i::WEAPON_DEAGLE },
 			{ "WEAPON_ELITE",					i::WEAPON_ELITE },
 			{ "WEAPON_FIVESEVEN",				i::WEAPON_FIVESEVEN },
@@ -62,16 +60,25 @@ namespace Util
 			{ "WEAPON_KNIFE_SURVIVAL_BOWIE",	i::WEAPON_KNIFE_SURVIVAL_BOWIE },
 			{ "WEAPON_KNIFE_BUTTERFLY",			i::WEAPON_KNIFE_BUTTERFLY },
 			{ "WEAPON_KNIFE_PUSH",				i::WEAPON_KNIFE_PUSH },
+			{ "GLOVE_STUDDED_BLOODHOUND",	i::GLOVE_STUDDED_BLOODHOUND},
+			{ "GLOVE_CT_SIDE",	i::GLOVE_CT_SIDE},
+			{ "GLOVE_T_SIDE",	i::GLOVE_T_SIDE},
+			{ "GLOVE_SPORTY",	i::GLOVE_SPORTY},
+			{ "GLOVE_SLICK",	i::GLOVE_SLICK},
+			{ "GLOVE_LEATHER_WRAP",	i::GLOVE_LEATHER_WRAP},
+			{ "GLOVE_MOTORCYCLE",	i::GLOVE_MOTORCYCLE},
+			{ "GLOVE_SPECIALIST",	i::GLOVE_SPECIALIST},
+
 		};  // ItemNames
 
 		std::string GetItemName(const enum ItemDefinitionIndex index)
 		{
-			return Util::MapReverseSearchOrDefault<std::string, enum ItemDefinitionIndex>(&ItemNames, index, "ITEM_INVALID");
+			return Util::MapReverseSearchOrDefault<std::string, ItemDefinitionIndex>(&ItemNames, index, "ITEM_INVALID");
 		}
 
-		enum ItemDefinitionIndex GetItemIndex(const std::string itemName)
+		ItemDefinitionIndex GetItemIndex(const std::string itemName)
 		{
-			return Util::MapSearchOrDefault<std::string, enum ItemDefinitionIndex>(&ItemNames, itemName, _invalid_item);
+			return Util::MapSearchOrDefault<std::string, ItemDefinitionIndex>(&ItemNames, itemName, ItemDefinitionIndex::INVALID);
 		}
 	}
 }

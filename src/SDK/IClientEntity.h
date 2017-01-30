@@ -25,10 +25,7 @@ enum MoveType_t
 enum DataUpdateType_t
 {
 	DATA_UPDATE_CREATED = 0,
-//	DATA_UPDATE_ENTERED_PVS,
 	DATA_UPDATE_DATATABLE_CHANGED,
-//	DATA_UPDATE_LEFT_PVS,
-//	DATA_UPDATE_DESTROYED,
 };
 
 class ICollideable
@@ -69,13 +66,19 @@ class IClientNetworkable
 public:
 	virtual ~IClientNetworkable() {};
 
+	void Release()
+	{
+		typedef void (* oRelease)(void*);
+		return getvfunc<oRelease>(this, 1)(this);
+	}
+
 	ClientClass* GetClientClass()
 	{
 		typedef ClientClass* (* oGetClientClass)(void*);
 		return getvfunc<oGetClientClass>(this, 2)(this);
 	}
 
-	void PreDataUpdate(DataUpdateType_t updateType) // Could be wrong
+	void PreDataUpdate(DataUpdateType_t updateType)
 	{
 		typedef void (* oPreDataUpdate)(void*, DataUpdateType_t);
 		return getvfunc<oPreDataUpdate>(this, 6)(this, updateType);
@@ -91,6 +94,12 @@ public:
 	{
 		typedef int (* oGetIndex)(void*);
 		return getvfunc<oGetIndex>(this, 10)(this);
+	}
+
+	void SetDestroyedOnRecreateEntities()
+	{
+		typedef void (* oSetDestroyedOnRecreateEntities)(void*);
+		return getvfunc<oSetDestroyedOnRecreateEntities>(this, 13)(this);
 	}
 };
 
@@ -110,10 +119,15 @@ class C_BaseEntity : public IClientEntity
 {
 public:
 
+	IClientNetworkable* GetNetworkable()
+	{
+		return (IClientNetworkable*)((uintptr_t)this + 0x10);
+	}
+
 	void SetModelIndex(int index)
 	{
 		typedef void (* oSetModelIndex)(void*, int);
-		return getvfunc<oSetModelIndex>(this, 78)(this, index);
+		return getvfunc<oSetModelIndex>(this, 111)(this, index);
 	}
 
 	int* GetModelIndex()
@@ -121,9 +135,9 @@ public:
 		return (int*)((uintptr_t)this + offsets.DT_BaseViewModel.m_nModelIndex);
 	}
 
-	int GetTeam()
+	TeamID GetTeam()
 	{
-		return *(int*)((uintptr_t)this + offsets.DT_BaseEntity.m_iTeamNum);
+		return *(TeamID*)((uintptr_t)this + offsets.DT_BaseEntity.m_iTeamNum);
 	}
 
 	Vector GetVecOrigin()
@@ -191,9 +205,9 @@ public:
 		return *(int*)((uintptr_t)this + offsets.DT_BasePlayer.m_fFlags);
 	}
 
-	int* GetObserverMode()
+	ObserverMode_t* GetObserverMode()
 	{
-		return (int*)((uintptr_t)this + offsets.DT_BasePlayer.m_iObserverMode);
+		return (ObserverMode_t*)((uintptr_t)this + offsets.DT_BasePlayer.m_iObserverMode);
 	}
 
 	void* GetObserverTarget()
@@ -301,6 +315,11 @@ public:
 		return (int*)((uintptr_t)this + offsets.DT_BaseCombatCharacter.m_hMyWeapons);
 	}
 
+	int* GetWearables()
+	{
+		return (int*)((uintptr_t)this + offsets.DT_BaseCombatCharacter.m_hMyWearables);
+	}
+
 	bool GetAlive()
 	{
 		return this->GetHealth() > 0 && this->GetLifeState() == LIFE_ALIVE;
@@ -351,9 +370,9 @@ public:
 class C_BaseAttributableItem : public C_BaseEntity
 {
 public:
-	int* GetItemDefinitionIndex()
+	ItemDefinitionIndex* GetItemDefinitionIndex()
 	{
-		return (int*)((uintptr_t)this + offsets.DT_BaseAttributableItem.m_iItemDefinitionIndex);
+		return (ItemDefinitionIndex*)((uintptr_t)this + offsets.DT_BaseAttributableItem.m_iItemDefinitionIndex);
 	}
 
 	int* GetItemIDHigh()

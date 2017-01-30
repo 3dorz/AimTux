@@ -1,10 +1,10 @@
 #include "namechanger.h"
 
-char* NameChanger::origName = strdup("");
+std::string NameChanger::origName = "";
 int NameChanger::changes = -1;
 NC_Type NameChanger::type = NC_NORMAL;
 
-enum Colors
+enum class Colors
 {
 	WHITE = 1,
 	DARK_RED,
@@ -24,16 +24,14 @@ enum Colors
 	ORANGE,
 };
 
-char* NameChanger::GetName()
+std::string NameChanger::GetName()
 {
 	IEngineClient::player_info_t playerInfo;
 	engine->GetPlayerInfo(engine->GetLocalPlayer(), &playerInfo);
-	char* buff;
-	asprintf(&buff, "%s", playerInfo.name);
-	return buff;
+	return std::string(playerInfo.name);
 }
 
-const char* Rainbowify(char* name)
+std::string Rainbowify(const std::string& name)
 {
 	std::string base = " \x01\x0B";
 	std::vector<char> rainbow = {
@@ -45,28 +43,28 @@ const char* Rainbowify(char* name)
 			(char)(Colors::PURPLE),
 	};
 
-	unsigned int color = 0;
-	for (char* it = name; *it; it++)
+	size_t color = 0;
+	for (char c : name)
 	{
 		if (color > rainbow.size() - 1)
 			color = 0;
 		base.push_back(rainbow[color]);
-		base.push_back(*it);
+		base.push_back(c);
 		color++;
 	}
 
 	base.append("\230");
-	return base.c_str();
+	return base;
 }
 
-const char* Colorize(char* name, int color = Colors::LIGHT_RED)
+std::string Colorize(const std::string& name, Colors color = Colors::LIGHT_RED)
 {
 	// TODO: Add color customization
 	std::string res = " \x01\x0B";
 	res += (char)(color);
 	res.append(name);
 	res.append("\230");
-	return res.c_str();
+	return res;
 }
 
 void NameChanger::BeginFrame(float frameTime)
@@ -95,6 +93,7 @@ void NameChanger::BeginFrame(float frameTime)
 				break;
 			case NC_RAINBOW:
 <<<<<<< HEAD
+<<<<<<< HEAD
 				SetName(Util::PadStringRight(" \x01\x0B\x07""A""\x08""I""\x09""M""\x0A""T""\x0B""U""\x0C""X""\x0D"".""\x0E""N""\x0F""E""\x10""T\n", strlen(" \x01\x0B\x07""A""\x08""I""\x09""M""\x0A""T""\x0B""U""\x0C""X""\x0D"".""\x0E""N""\x0F""E""\x10""T\n") + RandomInt(10, 50)));
 				break;
 			case NC_SOLID:
@@ -104,6 +103,12 @@ void NameChanger::BeginFrame(float frameTime)
 				break;
 			case NC_SOLID:
 				SetName(Util::PadStringRight(Colorize(origName), strlen(origName) + RandomInt(10, 50)));
+>>>>>>> refs/remotes/AimTuxOfficial/master
+=======
+				SetName(Util::PadStringRight(Rainbowify(origName), origName.size() + RandomInt(10, 50)));
+				break;
+			case NC_SOLID:
+				SetName(Util::PadStringRight(Colorize(origName), origName.size() + RandomInt(10, 50)));
 >>>>>>> refs/remotes/AimTuxOfficial/master
 				break;
 		}

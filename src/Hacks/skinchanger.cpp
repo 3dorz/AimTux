@@ -1,89 +1,110 @@
 #include "skinchanger.h"
 
 bool Settings::Skinchanger::enabled = false;
-std::unordered_map<int, Settings::Skinchanger::Skin> Settings::Skinchanger::skins = {
-		{ WEAPON_AWP, Settings::Skinchanger::Skin(344, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_AK47, Settings::Skinchanger::Skin(524, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_M4A1, Settings::Skinchanger::Skin(512, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_M4A1_SILENCER, Settings::Skinchanger::Skin(548, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_DEAGLE, Settings::Skinchanger::Skin(277, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_GLOCK, Settings::Skinchanger::Skin(38, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_USP_SILENCER, Settings::Skinchanger::Skin(332, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_FIVESEVEN, Settings::Skinchanger::Skin(252, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_SCAR20, Settings::Skinchanger::Skin(391, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_ELITE, Settings::Skinchanger::Skin(249, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_SSG08, Settings::Skinchanger::Skin(319, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_TEC9, Settings::Skinchanger::Skin(179, -1, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_KNIFE, Settings::Skinchanger::Skin(417, WEAPON_KNIFE_M9_BAYONET, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_KNIFE_T, Settings::Skinchanger::Skin(417, WEAPON_KNIFE_KARAMBIT, 0, 0.0005f, 1337, "AimTux", "") },
-		{ WEAPON_KNIFE_GUT, Settings::Skinchanger::Skin(-1, -1, -1, -1, -1, "", "models/weapons/v_knife_gut.mdl") },
-		{ WEAPON_KNIFE_FLIP, Settings::Skinchanger::Skin(-1, -1, -1, -1, -1, "", "models/weapons/v_knife_flip.mdl") },
-		{ WEAPON_KNIFE_BAYONET, Settings::Skinchanger::Skin(-1, -1, -1, -1, -1, "", "models/weapons/v_knife_bayonet.mdl") },
-		{ WEAPON_KNIFE_M9_BAYONET, Settings::Skinchanger::Skin(-1, -1, -1, -1, -1, "", "models/weapons/v_knife_m9_bay.mdl") },
-		{ WEAPON_KNIFE_KARAMBIT, Settings::Skinchanger::Skin(-1, -1, -1, -1, -1, "", "models/weapons/v_knife_karam.mdl") },
-		{ WEAPON_KNIFE_TACTICAL, Settings::Skinchanger::Skin(-1, -1, -1, -1, -1, "", "models/weapons/v_knife_tactical.mdl") },
-		{ WEAPON_KNIFE_BUTTERFLY, Settings::Skinchanger::Skin(-1, -1, -1, -1, -1, "", "models/weapons/v_knife_butterfly.mdl") },
-		{ WEAPON_KNIFE_SURVIVAL_BOWIE, Settings::Skinchanger::Skin(-1, -1, -1, -1, -1, "", "models/weapons/v_knife_survival_bowie.mdl") },
-		{ WEAPON_KNIFE_FALCHION, Settings::Skinchanger::Skin(-1, -1, -1, -1, -1, "", "models/weapons/v_knife_falchion_advanced.mdl") },
-		{ WEAPON_KNIFE_PUSH, Settings::Skinchanger::Skin(-1, -1, -1, -1, -1, "", "models/weapons/v_knife_push.mdl") }
+bool Settings::Skinchanger::Gloves::enabled = false;
+std::unordered_map<ItemDefinitionIndex, Settings::Skinchanger::Skin> Settings::Skinchanger::skins = {
+		{ ItemDefinitionIndex::WEAPON_AWP, Settings::Skinchanger::Skin(344, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_AK47, Settings::Skinchanger::Skin(524, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_M4A1, Settings::Skinchanger::Skin(512, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_M4A1_SILENCER, Settings::Skinchanger::Skin(548, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_DEAGLE, Settings::Skinchanger::Skin(277, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_GLOCK, Settings::Skinchanger::Skin(38, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_USP_SILENCER, Settings::Skinchanger::Skin(332, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_FIVESEVEN, Settings::Skinchanger::Skin(252, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_SCAR20, Settings::Skinchanger::Skin(391, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_ELITE, Settings::Skinchanger::Skin(249, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_SSG08, Settings::Skinchanger::Skin(319, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_TEC9, Settings::Skinchanger::Skin(179, ItemDefinitionIndex::INVALID, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE, Settings::Skinchanger::Skin(417, ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_T, Settings::Skinchanger::Skin(417, ItemDefinitionIndex::WEAPON_KNIFE_KARAMBIT, 0, 0.0005f, 1337, "AimTux", "") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_GUT, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_knife_gut.mdl") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_FLIP, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_knife_flip.mdl") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_BAYONET, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_knife_bayonet.mdl") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_knife_m9_bay.mdl") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_KARAMBIT, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_knife_karam.mdl") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_TACTICAL, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_knife_tactical.mdl") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_BUTTERFLY, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_knife_butterfly.mdl") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_SURVIVAL_BOWIE, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_knife_survival_bowie.mdl") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_FALCHION, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_knife_falchion_advanced.mdl") },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_PUSH, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_knife_push.mdl") },
+		{ ItemDefinitionIndex::GLOVE_T_SIDE, Settings::Skinchanger::Skin(10007, ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND, -1, 0.0005f, -1, "", "")},
+		{ ItemDefinitionIndex::GLOVE_CT_SIDE, Settings::Skinchanger::Skin(10007, ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND, -1, 0.0005f, -1, "", "")},
+		{ ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound.mdl")},
+		{ ItemDefinitionIndex::GLOVE_SPORTY, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_models/arms/glove_sporty/v_glove_sporty.mdl")},
+		{ ItemDefinitionIndex::GLOVE_SLICK, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_models/arms/glove_slick/v_glove_slick.mdl")},
+		{ ItemDefinitionIndex::GLOVE_LEATHER_WRAP, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_models/arms/glove_handwrap_leathery/v_glove_handwrap_leathery.mdl")},
+		{ ItemDefinitionIndex::GLOVE_MOTORCYCLE, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl")},
+		{ ItemDefinitionIndex::GLOVE_SPECIALIST, Settings::Skinchanger::Skin(-1, ItemDefinitionIndex::INVALID, -1, -1, -1, "", "models/weapons/v_models/arms/glove_specialist/v_glove_specialist.mdl")},
 };
 
 bool SkinChanger::ForceFullUpdate = true;
 
-const char* GetModelByItemIndex(int id)
+const char* GetModelByItemIndex(ItemDefinitionIndex id)
 {
 	switch (id)
 	{
-		case WEAPON_KNIFE_GUT:
+		case ItemDefinitionIndex::WEAPON_KNIFE_GUT:
 			return "models/weapons/v_knife_gut.mdl";
-		case WEAPON_KNIFE_FLIP:
+		case ItemDefinitionIndex::WEAPON_KNIFE_FLIP:
 			return "models/weapons/v_knife_flip.mdl";
-		case WEAPON_KNIFE_BAYONET:
+		case ItemDefinitionIndex::WEAPON_KNIFE_BAYONET:
 			return "models/weapons/v_knife_bayonet.mdl";
-		case WEAPON_KNIFE_M9_BAYONET:
+		case ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET:
 			return "models/weapons/v_knife_m9_bay.mdl";
-		case WEAPON_KNIFE_KARAMBIT:
+		case ItemDefinitionIndex::WEAPON_KNIFE_KARAMBIT:
 			return "models/weapons/v_knife_karam.mdl";
-		case WEAPON_KNIFE_TACTICAL:
+		case ItemDefinitionIndex::WEAPON_KNIFE_TACTICAL:
 			return "models/weapons/v_knife_tactical.mdl";
-		case WEAPON_KNIFE_BUTTERFLY:
+		case ItemDefinitionIndex::WEAPON_KNIFE_BUTTERFLY:
 			return "models/weapons/v_knife_butterfly.mdl";
-		case WEAPON_KNIFE_SURVIVAL_BOWIE:
+		case ItemDefinitionIndex::WEAPON_KNIFE_SURVIVAL_BOWIE:
 			return "models/weapons/v_knife_survival_bowie.mdl";
-		case WEAPON_KNIFE_FALCHION:
+		case ItemDefinitionIndex::WEAPON_KNIFE_FALCHION:
 			return "models/weapons/v_knife_falchion_advanced.mdl";
-		case WEAPON_KNIFE_PUSH:
+		case ItemDefinitionIndex::WEAPON_KNIFE_PUSH:
 			return "models/weapons/v_knife_push.mdl";
+		case ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND:
+			return "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound.mdl";
+		case ItemDefinitionIndex::GLOVE_SPORTY:
+			return "models/weapons/v_models/arms/glove_sporty/v_glove_sporty.mdl";
+		case ItemDefinitionIndex::GLOVE_SLICK:
+			return "models/weapons/v_models/arms/glove_slick/v_glove_slick.mdl";
+		case ItemDefinitionIndex::GLOVE_LEATHER_WRAP:
+			return "models/weapons/v_models/arms/glove_handwrap_leathery/v_glove_handwrap_leathery.mdl";
+		case ItemDefinitionIndex::GLOVE_MOTORCYCLE:
+			return "models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl";
+		case ItemDefinitionIndex::GLOVE_SPECIALIST:
+			return "models/weapons/v_models/arms/glove_specialist/v_glove_specialist.mdl";
 		default:
 			return NULL;
 	}
 }
 
-const char* KnifeToName(int id)
+const char* KnifeToName(ItemDefinitionIndex id)
 {
 	Settings::Skinchanger::Skin skin = Settings::Skinchanger::skins[id];
 
-	switch (skin.ItemDefinitionIndex)
+	switch (skin._ItemDefinitionIndex)
 	{
-		case WEAPON_KNIFE_BAYONET:
+		case ItemDefinitionIndex::WEAPON_KNIFE_BAYONET:
 			return "bayonet";
-		case WEAPON_KNIFE_FLIP:
+		case ItemDefinitionIndex::WEAPON_KNIFE_FLIP:
 			return "knife_flip";
-		case WEAPON_KNIFE_GUT:
+		case ItemDefinitionIndex::WEAPON_KNIFE_GUT:
 			return "knife_gut";
-		case WEAPON_KNIFE_KARAMBIT:
+		case ItemDefinitionIndex::WEAPON_KNIFE_KARAMBIT:
 			return "knife_karambit";
-		case WEAPON_KNIFE_M9_BAYONET:
+		case ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET:
 			return "knife_m9_bayonet";
-		case WEAPON_KNIFE_TACTICAL:
+		case ItemDefinitionIndex::WEAPON_KNIFE_TACTICAL:
 			return "knife_tactical";
-		case WEAPON_KNIFE_FALCHION:
+		case ItemDefinitionIndex::WEAPON_KNIFE_FALCHION:
 			return "knife_falchion";
-		case WEAPON_KNIFE_SURVIVAL_BOWIE:
+		case ItemDefinitionIndex::WEAPON_KNIFE_SURVIVAL_BOWIE:
 			return "knife_survival_bowie";
-		case WEAPON_KNIFE_BUTTERFLY:
+		case ItemDefinitionIndex::WEAPON_KNIFE_BUTTERFLY:
 			return "knife_butterfly";
-		case WEAPON_KNIFE_PUSH:
+		case ItemDefinitionIndex::WEAPON_KNIFE_PUSH:
 			return "knife_push";
 		default:
 			return NULL;
@@ -132,8 +153,8 @@ void SkinChanger::FrameStageNotify(ClientFrameStage_t stage)
 			if (currentSkin.PaintKit != -1)
 				*weapon->GetFallbackPaintKit() = currentSkin.PaintKit;
 
-			if (currentSkin.ItemDefinitionIndex != -1)
-				*weapon->GetItemDefinitionIndex() = currentSkin.ItemDefinitionIndex;
+			if (currentSkin._ItemDefinitionIndex != ItemDefinitionIndex::INVALID)
+				*weapon->GetItemDefinitionIndex() = currentSkin._ItemDefinitionIndex;
 
 			if (const char* modelFilename = GetModelByItemIndex(*weapon->GetItemDefinitionIndex()))
 				*weapon->GetModelIndex() = modelInfo->GetModelIndex(modelFilename);
@@ -180,6 +201,86 @@ void SkinChanger::FrameStageNotify(ClientFrameStage_t stage)
 			*viewmodel->GetModelIndex() = modelInfo->GetModelIndex(currentSkin.Model.c_str());
 	}
 
+	if (Settings::Skinchanger::Gloves::enabled && ModSupport::current_mod != ModType::CSCO)
+	{
+		if (!engine->IsInGame())
+			return;
+
+		if (stage != ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START)
+			return;
+
+		/* get our player entity */
+		C_BasePlayer* localplayer = (C_BasePlayer*) entitylist->GetClientEntity(engine->GetLocalPlayer());
+		if (!localplayer)
+			return;
+
+		if(!localplayer->GetAlive())
+		{
+			C_BaseAttributableItem* glove = (C_BaseAttributableItem*) entitylist->GetClientEntity(localplayer->GetWearables()[0] & 0xFFF);
+			if (!glove)
+				return;
+
+			glove->GetNetworkable()->SetDestroyedOnRecreateEntities();
+			glove->GetNetworkable()->Release();
+		}
+		else
+		{
+			if (!entitylist->GetClientEntityFromHandle((void*) localplayer->GetWearables()))
+			{
+				for (ClientClass* pClass = client->GetAllClasses(); pClass; pClass = pClass->m_pNext)
+				{
+					if (pClass->m_ClassID != EClassIds::CEconWearable)
+						continue;
+
+					// Gets last entityindex entry and just add 1 | Random Serial.
+					int iEntry = (entitylist->GetHighestEntityIndex() + 1), iSerial = RandomInt(0x0, 0xFFF);
+
+					// Create the entity, adds it to the enum of Entities.
+					pClass->m_pCreateFn(iEntry, iSerial);
+
+					// Assign Wearable[0] (gloves) with the entry value and serial.
+					localplayer->GetWearables()[0] = iEntry | (iSerial << 16);
+
+					break;
+				}
+			}
+
+			C_BaseAttributableItem* glove = (C_BaseAttributableItem*) entitylist->GetClientEntity(localplayer->GetWearables()[0] & 0xFFF);
+			if (!glove)
+				return;
+
+			IEngineClient::player_info_t localplayer_info;
+			engine->GetPlayerInfo(engine->GetLocalPlayer(), &localplayer_info);
+
+			// Have to use  this because there is no preset ItemDefinitionIndex
+			Settings::Skinchanger::Skin currentSkin = Settings::Skinchanger::skins[ItemDefinitionIndex::GLOVE_CT_SIDE];
+
+			if (*glove->GetFallbackPaintKit() != currentSkin.PaintKit &&
+					*glove->GetItemDefinitionIndex() != currentSkin._ItemDefinitionIndex &&
+					*glove->GetFallbackWear() != currentSkin.Wear)
+			{
+
+				if (currentSkin.PaintKit != -1)
+					*glove->GetFallbackPaintKit() = currentSkin.PaintKit;
+
+				if (currentSkin._ItemDefinitionIndex != ItemDefinitionIndex::INVALID)
+					*glove->GetItemDefinitionIndex() = currentSkin._ItemDefinitionIndex;
+
+				if (currentSkin.Wear != -1)
+					*glove->GetFallbackWear() = currentSkin.Wear;
+
+				*glove->GetFallbackSeed() = 0;
+				*glove->GetFallbackStatTrak() = -1;
+				*glove->GetEntityQuality() = 4;
+				*glove->GetItemIDHigh() = -1;
+				*glove->GetAccountID() = localplayer_info.xuidlow;
+
+				glove->SetModelIndex(modelInfo->GetModelIndex(GetModelByItemIndex(*glove->GetItemDefinitionIndex())));
+				glove->GetNetworkable()->PreDataUpdate(DATA_UPDATE_CREATED);
+			}
+		}
+	}
+
 	if (SkinChanger::ForceFullUpdate)
 	{
 		::ForceFullUpdate(GetClientState());
@@ -204,12 +305,12 @@ void SkinChanger::FireEventClientSide(IGameEvent* event)
 	const char* weapon = event->GetString("weapon");
 	if (strcmp(weapon, "knife_default_ct") == 0)
 	{
-		const char* name = KnifeToName(WEAPON_KNIFE);
+		const char* name = KnifeToName(ItemDefinitionIndex::WEAPON_KNIFE);
 		event->SetString("weapon", name ?: weapon);
 	}
 	else if (strcmp(weapon, "knife_t") == 0)
 	{
-		const char* name = KnifeToName(WEAPON_KNIFE_T);
+		const char* name = KnifeToName(ItemDefinitionIndex::WEAPON_KNIFE_T);
 		event->SetString("weapon", name ?: weapon);
 	}
 }

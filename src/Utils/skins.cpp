@@ -1,40 +1,40 @@
 #include "skins.h"
 
 std::vector<std::pair<int, const char*>> guns = {
-		{ -1, "<-Default->"},
-		{ WEAPON_AK47, "#SFUI_WPNHUD_AK47" },
-		{ WEAPON_AUG, "#SFUI_WPNHUD_Aug" },
-		{ WEAPON_AWP, "#SFUI_WPNHUD_AWP" },
-		{ WEAPON_CZ75A, "#SFUI_WPNHUD_CZ75" },
-		{ WEAPON_DEAGLE, "#SFUI_WPNHUD_DesertEagle" },
-		{ WEAPON_ELITE, "#SFUI_WPNHUD_Elites" },
-		{ WEAPON_FAMAS, "#SFUI_WPNHUD_Famas" },
-		{ WEAPON_FIVESEVEN, "#SFUI_WPNHUD_FiveSeven" },
-		{ WEAPON_GALILAR, "#SFUI_WPNHUD_GalilAR" },
-		{ WEAPON_G3SG1, "#SFUI_WPNHUD_G3SG1" },
-		{ WEAPON_GLOCK, "#SFUI_WPNHUD_Glock18" },
-		{ WEAPON_M249, "#SFUI_WPNHUD_M249" },
-		{ WEAPON_M4A1_SILENCER, "#SFUI_WPNHUD_M4_SILENCER" },
-		{ WEAPON_M4A1, "#SFUI_WPNHUD_M4A1" },
-		{ WEAPON_MAC10, "#SFUI_WPNHUD_MAC10" },
-		{ WEAPON_MAG7, "#SFUI_WPNHUD_Mag7" },
-		{ WEAPON_MP7, "#SFUI_WPNHUD_MP7" },
-		{ WEAPON_MP9, "#SFUI_WPNHUD_MP9" },
-		{ WEAPON_NEGEV, "#SFUI_WPNHUD_Negev" },
-		{ WEAPON_NOVA, "#SFUI_WPNHUD_Nova" },
-		{ WEAPON_HKP2000, "#SFUI_WPNHUD_HKP2000" },
-		{ WEAPON_P250, "#SFUI_WPNHUD_P250" },
-		{ WEAPON_P90, "#SFUI_WPNHUD_P90" },
-		{ WEAPON_BIZON, "#SFUI_WPNHUD_Bizon" },
-		{ WEAPON_REVOLVER, "#SFUI_WPNHUD_REVOLVER" },
-		{ WEAPON_SAWEDOFF, "#SFUI_WPNHUD_Sawedoff" },
-		{ WEAPON_SCAR20, "#SFUI_WPNHUD_SCAR20" },
-		{ WEAPON_SG556, "#SFUI_WPNHUD_SG556" },
-		{ WEAPON_SSG08, "#SFUI_WPNHUD_SSG08" },
-		{ WEAPON_TEC9, "#SFUI_WPNHUD_Tec9" },
-		{ WEAPON_UMP45, "#SFUI_WPNHUD_UMP45" },
-		{ WEAPON_USP_SILENCER, "#SFUI_WPNHUD_USP_SILENCER" },
-		{ WEAPON_XM1014, "#SFUI_WPNHUD_xm1014" },
+		{ (int) ItemDefinitionIndex::INVALID, "<-Default->"},
+		{ (int) ItemDefinitionIndex::WEAPON_AK47, "#SFUI_WPNHUD_AK47" },
+		{ (int) ItemDefinitionIndex::WEAPON_AUG, "#SFUI_WPNHUD_Aug" },
+		{ (int) ItemDefinitionIndex::WEAPON_AWP, "#SFUI_WPNHUD_AWP" },
+		{ (int) ItemDefinitionIndex::WEAPON_CZ75A, "#SFUI_WPNHUD_CZ75" },
+		{ (int) ItemDefinitionIndex::WEAPON_DEAGLE, "#SFUI_WPNHUD_DesertEagle" },
+		{ (int) ItemDefinitionIndex::WEAPON_ELITE, "#SFUI_WPNHUD_Elites" },
+		{ (int) ItemDefinitionIndex::WEAPON_FAMAS, "#SFUI_WPNHUD_Famas" },
+		{ (int) ItemDefinitionIndex::WEAPON_FIVESEVEN, "#SFUI_WPNHUD_FiveSeven" },
+		{ (int) ItemDefinitionIndex::WEAPON_GALILAR, "#SFUI_WPNHUD_GalilAR" },
+		{ (int) ItemDefinitionIndex::WEAPON_G3SG1, "#SFUI_WPNHUD_G3SG1" },
+		{ (int) ItemDefinitionIndex::WEAPON_GLOCK, "#SFUI_WPNHUD_Glock18" },
+		{ (int) ItemDefinitionIndex::WEAPON_M249, "#SFUI_WPNHUD_M249" },
+		{ (int) ItemDefinitionIndex::WEAPON_M4A1_SILENCER, "#SFUI_WPNHUD_M4_SILENCER" },
+		{ (int) ItemDefinitionIndex::WEAPON_M4A1, "#SFUI_WPNHUD_M4A1" },
+		{ (int) ItemDefinitionIndex::WEAPON_MAC10, "#SFUI_WPNHUD_MAC10" },
+		{ (int) ItemDefinitionIndex::WEAPON_MAG7, "#SFUI_WPNHUD_Mag7" },
+		{ (int) ItemDefinitionIndex::WEAPON_MP7, "#SFUI_WPNHUD_MP7" },
+		{ (int) ItemDefinitionIndex::WEAPON_MP9, "#SFUI_WPNHUD_MP9" },
+		{ (int) ItemDefinitionIndex::WEAPON_NEGEV, "#SFUI_WPNHUD_Negev" },
+		{ (int) ItemDefinitionIndex::WEAPON_NOVA, "#SFUI_WPNHUD_Nova" },
+		{ (int) ItemDefinitionIndex::WEAPON_HKP2000, "#SFUI_WPNHUD_HKP2000" },
+		{ (int) ItemDefinitionIndex::WEAPON_P250, "#SFUI_WPNHUD_P250" },
+		{ (int) ItemDefinitionIndex::WEAPON_P90, "#SFUI_WPNHUD_P90" },
+		{ (int) ItemDefinitionIndex::WEAPON_BIZON, "#SFUI_WPNHUD_Bizon" },
+		{ (int) ItemDefinitionIndex::WEAPON_REVOLVER, "#SFUI_WPNHUD_REVOLVER" },
+		{ (int) ItemDefinitionIndex::WEAPON_SAWEDOFF, "#SFUI_WPNHUD_Sawedoff" },
+		{ (int) ItemDefinitionIndex::WEAPON_SCAR20, "#SFUI_WPNHUD_SCAR20" },
+		{ (int) ItemDefinitionIndex::WEAPON_SG556, "#SFUI_WPNHUD_SG556" },
+		{ (int) ItemDefinitionIndex::WEAPON_SSG08, "#SFUI_WPNHUD_SSG08" },
+		{ (int) ItemDefinitionIndex::WEAPON_TEC9, "#SFUI_WPNHUD_Tec9" },
+		{ (int) ItemDefinitionIndex::WEAPON_UMP45, "#SFUI_WPNHUD_UMP45" },
+		{ (int) ItemDefinitionIndex::WEAPON_USP_SILENCER, "#SFUI_WPNHUD_USP_SILENCER" },
+		{ (int) ItemDefinitionIndex::WEAPON_XM1014, "#SFUI_WPNHUD_xm1014" },
 };
 
 std::vector<std::pair<int, const char*>> knives = {
@@ -601,6 +601,42 @@ std::vector<std::pair<int, const char*>> weapon_skins = {
 		{ 638, "#PaintKit_cu_wp_sawedoff_Tag" },
 };
 
+std::vector<std::pair<int, const char*>> glove_skins = {
+		{ 10006, "#PaintKit_bloodhound_black_silver_tag" },
+		{ 10007, "#PaintKit_bloodhound_snakeskin_brass_tag" },
+		{ 10008, "#PaintKit_bloodhound_metallic_tag" },
+		{ 10009, "#PaintKit_handwrap_leathery_tag" },
+		{ 10010, "#PaintKit_handwrap_camo_grey_tag" },
+		{ 10013, "#PaintKit_slick_black_tag" },
+		{ 10015, "#PaintKit_slick_military_tag" },
+		{ 10016, "#PaintKit_slick_red_tag" },
+		{ 10018, "#PaintKit_sporty_light_blue_tag" },
+		{ 10019, "#PaintKit_sporty_military_tag" },
+		{ 10021, "#PaintKit_handwrap_red_slaughter_tag" },
+		{ 10024, "#PaintKit_motorcycle_basic_black_tag" },
+		{ 10026, "#PaintKit_motorcycle_mint_triangle_tag" },
+		{ 10027, "#PaintKit_motorcycle_mono_boom_tag" },
+		{ 10028, "#PaintKit_motorcycle_triangle_blue_tag" },
+		{ 10030, "#PaintKit_specialist_ddpat_green_camo_tag" },
+		{ 10033, "#PaintKit_specialist_kimono_diamonds_red_tag" },
+		{ 10034, "#PaintKit_specialist_emerald_web_tag" },
+		{ 10035, "#PaintKit_specialist_white_orange_grey_tag" },
+		{ 10036, "#PaintKit_handwrap_fabric_orange_camo_tag" },
+		{ 10037, "#PaintKit_sporty_purple_tag" },
+		{ 10038, "#PaintKit_sporty_green_tag" },
+		{ 10039, "#PaintKit_bloodhound_guerrilla_tag" },
+		{ 10040, "#PaintKit_slick_snakeskin_yellow_tag" },
+};
+
+std::vector<std::pair<int, const char*>> gloves {
+		{ (int) ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND, "#CSGO_Wearable_t_studdedgloves"},
+		{ (int) ItemDefinitionIndex::GLOVE_SPORTY, "#CSGO_Wearable_v_sporty_glove"},
+		{ (int) ItemDefinitionIndex::GLOVE_SLICK, "#CSGO_Wearable_v_slick_glove"},
+		{ (int) ItemDefinitionIndex::GLOVE_LEATHER_WRAP, "#CSGO_Wearable_v_leather_handwrap"},
+		{ (int) ItemDefinitionIndex::GLOVE_MOTORCYCLE, "#CSGO_Wearable_v_motorcycle_glove"},
+		{ (int) ItemDefinitionIndex::GLOVE_SPECIALIST, "#CSGO_Wearable_v_specialist_glove"},
+};
+
 void LocalizeGuns()
 {
 	int index = -1;
@@ -609,7 +645,7 @@ void LocalizeGuns()
 	{
 		index++;
 
-		if (it.first == -1)
+		if (it.first == (int) ItemDefinitionIndex::INVALID)
 			continue;
 
 		std::string localized = Util::WstringToString(localize->FindSafe(it.second));
@@ -665,6 +701,54 @@ void LocalizeSkins()
 	});
 }
 
+void LocalizeGloves()
+{
+	int index = -1;
+
+	for (auto it : gloves)
+	{
+		index++;
+
+		if (it.first == -1)
+			continue;
+
+		std::string localized = Util::WstringToString(localize->FindSafe(it.second));
+		gloves[index] = { it.first, strdup(localized.c_str()) };
+	}
+}
+
+void LocalizeGloveSkins()
+{
+	int index = -1;
+
+	for (auto it : glove_skins)
+	{
+		index++;
+
+		if (it.first == -1)
+			continue;
+
+		std::string localized = Util::WstringToString(localize->FindSafe(it.second));
+		glove_skins[index] = { it.first, strdup(localized.c_str()) };
+	}
+
+	std::sort(glove_skins.begin(), glove_skins.end(), [](auto &left, auto &right) {
+		std::size_t leftIter = 0, rightIter = 0;
+		std::size_t leftSize = strlen(left.second), rightSize = strlen(right.second);
+
+		while (leftIter != leftSize && rightIter != rightSize)
+		{
+			if (left.second[leftIter] != right.second[rightIter])
+				return left.second[leftIter] < right.second[rightIter];
+
+			++leftIter;
+			++rightIter;
+		}
+
+		return leftSize < rightSize;
+	});
+}
+
 void Skins::Localize()
 {
 	static bool isLocalized = false;
@@ -677,6 +761,8 @@ void Skins::Localize()
 	LocalizeGuns();
 	LocalizeKnives();
 	LocalizeSkins();
+	LocalizeGloves();
+	LocalizeGloveSkins();
 
 	isLocalized = true;
 }

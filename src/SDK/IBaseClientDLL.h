@@ -56,14 +56,16 @@ struct RecvProp
 	const char *m_pParentArrayPropName;
 };
 
+typedef void*	(*CreateClientClassFn)( int entnum, int serialNum );
+
 struct ClientClass
 {
-	void *m_pCreateFn;
+	CreateClientClassFn m_pCreateFn;
 	void *m_pCreateEventFn;
 	char *m_pNetworkName;
 	RecvTable *m_pRecvTable;
 	ClientClass *m_pNext;
-	int m_ClassID;
+	EClassIds m_ClassID;
 };
 
 class IBaseClientDLL
